@@ -1,4 +1,5 @@
 import { TrendingUp } from "lucide-react";
+import Lottie from "lottie-react";
 
 interface Metric {
   value: string;
@@ -6,7 +7,7 @@ interface Metric {
 }
 
 interface ProjectCardProps {
-  image: string;
+  image: string | any;
   company: string;
   year: string;
   title: string;
@@ -16,12 +17,20 @@ interface ProjectCardProps {
 const ProjectCard = ({ image, company, year, title, metrics }: ProjectCardProps) => {
   return (
     <div className="bg-card rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
-      <div className="aspect-[4/3] bg-secondary overflow-hidden">
-        <img 
-          src={image} 
-          alt={title}
-          className="w-full h-full object-cover"
-        />
+      <div className="aspect-[4/3] bg-secondary overflow-hidden flex items-center justify-center">
+        {typeof image === 'object' ? (
+          <Lottie 
+            animationData={image}
+            loop={true}
+            className="w-full h-full"
+          />
+        ) : (
+          <img 
+            src={image} 
+            alt={title}
+            className="w-full h-full object-cover"
+          />
+        )}
       </div>
       <div className="p-6">
         <div className="flex items-center gap-2 text-sm text-muted-foreground mb-2">

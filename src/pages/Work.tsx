@@ -1,9 +1,10 @@
 import ProjectCard from "@/components/ProjectCard";
+import showreelAnimation from "@/assets/animations/showreel.json";
 
 const Work = () => {
   const projects = [
     {
-      image: "/placeholder.svg",
+      image: showreelAnimation,
       company: "AXIS",
       year: "2024",
       title: "Improve AXIS Discovery Package Page",
