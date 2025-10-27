@@ -4,6 +4,7 @@ import showreelAnimation from "@/assets/animations/showreel.json";
 const Work = () => {
   const projects = [
     {
+      projectId: "axis",
       image: showreelAnimation,
       company: "AXIS",
       year: "2024",
@@ -13,6 +14,7 @@ const Work = () => {
       ]
     },
     {
+      projectId: "bdd-app",
       image: "/placeholder.svg",
       company: "BDD App",
       year: "2023",
@@ -23,6 +25,7 @@ const Work = () => {
       ]
     },
     {
+      projectId: "technoplast",
       image: "/placeholder.svg",
       company: "Technoplast",
       year: "2022",

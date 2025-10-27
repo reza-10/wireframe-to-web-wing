@@ -7,6 +7,7 @@ import Sidebar from "./components/Sidebar";
 import Work from "./pages/Work";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
+import ProjectDetail from "./pages/ProjectDetail";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -20,6 +21,7 @@ const App = () => (
         <Sidebar />
         <Routes>
           <Route path="/" element={<Work />} />
+          <Route path="/project/:projectId" element={<ProjectDetail />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

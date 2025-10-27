@@ -1,5 +1,6 @@
 import { TrendingUp } from "lucide-react";
 import Lottie from "lottie-react";
+import { useNavigate } from "react-router-dom";
 
 interface Metric {
   value: string;
@@ -12,11 +13,17 @@ interface ProjectCardProps {
   year: string;
   title: string;
   metrics: Metric[];
+  projectId: string;
 }
 
-const ProjectCard = ({ image, company, year, title, metrics }: ProjectCardProps) => {
+const ProjectCard = ({ image, company, year, title, metrics, projectId }: ProjectCardProps) => {
+  const navigate = useNavigate();
+
   return (
-    <div className="bg-card rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+    <div 
+      onClick={() => navigate(`/project/${projectId}`)}
+      className="bg-card rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-all cursor-pointer hover:scale-[1.02]"
+    >
       <div className="aspect-[4/3] bg-secondary overflow-hidden flex items-center justify-center">
         {typeof image === 'object' ? (
           <Lottie 
