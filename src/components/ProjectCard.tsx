@@ -1,5 +1,5 @@
-import { TrendingUp } from "lucide-react";
 import Lottie from "lottie-react";
+import { TrendingUp } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 interface Metric {
@@ -8,32 +8,40 @@ interface Metric {
 }
 
 interface ProjectCardProps {
-  image: string | any;
-  company: string;
-  year: string;
+  client: string;
+  date: string;
   title: string;
   metrics: Metric[];
   projectId: string;
+  thumbnail: any;
 }
 
-const ProjectCard = ({ image, company, year, title, metrics, projectId }: ProjectCardProps) => {
+const ProjectCard = ({
+  client,
+  date,
+  title,
+  metrics,
+  projectId,
+  thumbnail,
+}: ProjectCardProps) => {
   const navigate = useNavigate();
 
   return (
-    <div 
+    <div
       onClick={() => navigate(`/project/${projectId}`)}
-      className="bg-card rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-all cursor-pointer hover:scale-[1.02]"
+      className="bg-card overflow-hidden shadow-sm border border-[#E8E8E8] hover:shadow-md transition-all cursor-pointer hover:scale-[1.02]"
     >
-      <div className="aspect-[4/3] bg-secondary overflow-hidden flex items-center justify-center">
-        {typeof image === 'object' ? (
-          <Lottie 
-            animationData={image}
+      <div className="h-60 bg-secondary overflow-hidden flex items-center justify-center">
+        {typeof thumbnail === "object" ? (
+          <Lottie
+            animationData={thumbnail}
             loop={true}
             className="w-full h-full"
+            style={{ objectFit: "cover" }}
           />
         ) : (
-          <img 
-            src={image} 
+          <img
+            src={thumbnail}
             alt={title}
             className="w-full h-full object-cover"
           />
@@ -41,11 +49,13 @@ const ProjectCard = ({ image, company, year, title, metrics, projectId }: Projec
       </div>
       <div className="p-6">
         <div className="flex items-center gap-2 text-sm text-muted-foreground mb-2">
-          <span>{company}</span>
+          <span>{client}</span>
           <span>•</span>
-          <span>{year}</span>
+          <span>{date}</span>
         </div>
-        <h3 className="text-xl font-semibold mb-4 text-card-foreground">{title}</h3>
+        <h3 className="text-xl font-semibold mb-4 text-card-foreground">
+          {title}
+        </h3>
         <div className="space-y-2">
           {metrics.map((metric, index) => (
             <div key={index} className="flex items-center gap-2 text-sm">

@@ -8,7 +8,7 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    --background: 0 0% 98%;
+    --background: #FFFFFF;
     --foreground: 0 0% 10%;
 
     --card: 0 0% 100%;
@@ -50,7 +50,7 @@ All colors MUST be HSL.
 
   .dark {
     --background: 0 0% 10%;
-    --foreground: 0 0% 98%;
+    --foreground: #FFFFFF;
 
     --card: 0 0% 12%;
     --card-foreground: 0 0% 98%;
@@ -76,7 +76,7 @@ All colors MUST be HSL.
     --border: 0 0% 20%;
     --input: 0 0% 20%;
     --ring: 221 83% 53%;
-    
+
     --sidebar-background: 0 0% 12%;
     --sidebar-foreground: 0 0% 95%;
     --sidebar-primary: 221 83% 53%;
@@ -95,5 +95,15 @@ All colors MUST be HSL.
 
   body {
     @apply bg-background text-foreground;
+  }
+
+  .text-black-light {
+    color: #000F2E
+  }
+
+  h1 {
+    font-size: 2rem;
+    line-height: 1.15;
+    margin: 0;
   }
 }

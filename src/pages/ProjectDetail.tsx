@@ -1,32 +1,54 @@
-import { useParams, useNavigate } from "react-router-dom";
-import { ArrowLeft } from "lucide-react";
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Button } from "@/components/ui/button";
-import showreelAnimation from "@/assets/animations/showreel.json";
+import { useProject } from "@/hooks/useContentful";
+import { RenderContentfulRichText } from "@/lib/contentful-helper";
+import { ContentfulService } from "@/lib/contentful-service";
 import Lottie from "lottie-react";
+import { ArrowLeft } from "lucide-react";
+import Markdown from "react-markdown";
+import { useNavigate, useParams } from "react-router-dom";
+import remarkGfm from "remark-gfm";
 
 const ProjectDetail = () => {
   const { projectId } = useParams();
   const navigate = useNavigate();
+  const {
+    data: contentfulProject,
+    isLoading,
+    error,
+  } = useProject(projectId || "");
 
-  // Project data - in a real app this would come from an API or database
-  const projectData: Record<string, any> = {
-    axis: {
-      company: "AXIS",
-      year: "2024",
-      title: "Improve AXIS Discovery Package Page",
-      description: "A comprehensive redesign of the AXIS Discovery Package page to improve conversion rates and user engagement.",
-      challenge: "The existing package page had a low conversion rate and users were having difficulty understanding the value proposition and navigating through the booking process.",
-      solution: "We redesigned the entire user flow with a focus on clarity, visual hierarchy, and reducing friction in the booking process. The new design features improved information architecture, clearer pricing display, and a streamlined checkout experience.",
-      results: [
-        { metric: "69.11%", description: "Increase in Conversion Rate" },
-        { metric: "45%", description: "Reduction in bounce rate" },
-        { metric: "32%", description: "Increase in average session duration" }
-      ],
-      animation: showreelAnimation
-    }
-  };
+  // Transform Contentful data to match UI
+  let project: any = null;
+  if (contentfulProject) {
+    project = {
+      year: new Date(contentfulProject?.fields?.date).getFullYear().toString(),
+      title: contentfulProject?.fields?.title || "Untitled Project",
+      description:
+        contentfulProject?.fields?.description?.content?.[0]?.content?.[0]
+          ?.value || "No description.",
+      thumbnail: contentfulProject?.fields?.thumbnail,
+      background: contentfulProject?.fields?.background || "",
+      research: contentfulProject?.fields?.research || "",
+      ideation: contentfulProject?.fields?.ideation || "",
+      ideationDetail: contentfulProject?.fields?.ideation1 || null,
+      result: contentfulProject?.fields?.result || null,
+      featuredImage: contentfulProject?.fields?.featuredImage || null,
+      imagesGallery: contentfulProject?.fields?.imagesGallery || [],
+    };
+  }
 
-  const project = projectData[projectId || ""];
+  console.log({ project });
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-background pl-56 flex items-center justify-center">
+        <div className="text-center">
+          <h2 className="text-2xl font-bold mb-4">Loading project...</h2>
+        </div>
+      </div>
+    );
+  }
 
   if (!project) {
     return (
@@ -55,83 +77,58 @@ const ProjectDetail = () => {
         {/* Hero Section */}
         <div className="mb-16">
           <div className="flex items-center gap-2 text-sm text-muted-foreground mb-4">
-            <span>{project.company}</span>
-            <span>•</span>
             <span>{project.year}</span>
           </div>
           <h1 className="text-5xl font-bold mb-6">{project.title}</h1>
-          <p className="text-xl text-muted-foreground max-w-3xl">
-            {project.description}
-          </p>
-        </div>
 
-        {/* Animation/Hero Image */}
-        <div className="mb-16 bg-secondary rounded-lg overflow-hidden aspect-[16/9] flex items-center justify-center">
-          <Lottie 
-            animationData={project.animation}
-            loop={true}
-            className="w-full h-full"
-          />
-        </div>
-
-        {/* Challenge Section */}
-        <div className="mb-16">
-          <h2 className="text-3xl font-bold mb-6">The Challenge</h2>
-          <p className="text-lg text-muted-foreground leading-relaxed">
-            {project.challenge}
-          </p>
-        </div>
-
-        {/* Solution Section */}
-        <div className="mb-16">
-          <h2 className="text-3xl font-bold mb-6">The Solution</h2>
-          <p className="text-lg text-muted-foreground leading-relaxed">
-            {project.solution}
-          </p>
-        </div>
-
-        {/* Results Section */}
-        <div className="mb-16">
-          <h2 className="text-3xl font-bold mb-8">Results</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {project.results.map((result: any, index: number) => (
-              <div key={index} className="p-6 bg-card rounded-lg">
-                <div className="text-4xl font-bold text-accent mb-2">
-                  {result.metric}
-                </div>
-                <p className="text-muted-foreground">{result.description}</p>
-              </div>
-            ))}
+          {/* Hero Image */}
+          <div className="mb-16 bg-secondary rounded-lg overflow-hidden aspect-[16/9] flex items-center justify-center">
+            <Lottie
+              animationData={project.thumbnail}
+              loop={true}
+              className="w-full h-full"
+            />
           </div>
-        </div>
 
-        {/* Process Images Section */}
-        <div className="mb-16">
-          <h2 className="text-3xl font-bold mb-8">Design Process</h2>
-          <div className="space-y-8">
-            <div className="bg-secondary rounded-lg aspect-[16/9] flex items-center justify-center">
-              <Lottie 
-                animationData={project.animation}
-                loop={true}
-                className="w-2/3 h-2/3"
-              />
+          <div className="flex flex-col gap-10">
+            <div className="space-y-3">
+              <Markdown remarkPlugins={[remarkGfm]}>
+                {project.background}
+              </Markdown>
             </div>
-            <div className="grid grid-cols-2 gap-8">
-              <div className="bg-secondary rounded-lg aspect-square flex items-center justify-center">
-                <Lottie 
-                  animationData={project.animation}
-                  loop={true}
-                  className="w-2/3 h-2/3"
-                />
-              </div>
-              <div className="bg-secondary rounded-lg aspect-square flex items-center justify-center">
-                <Lottie 
-                  animationData={project.animation}
-                  loop={true}
-                  className="w-2/3 h-2/3"
-                />
-              </div>
+
+            <div className="space-y-3">
+              <Markdown remarkPlugins={[remarkGfm]}>
+                {project.research}
+              </Markdown>
             </div>
+
+            <div className="space-y-3 flex flex-col">
+              <Markdown remarkPlugins={[remarkGfm]}>
+                {project.ideation}
+              </Markdown>
+
+              <RenderContentfulRichText doc={project.ideationDetail} />
+            </div>
+
+            <div className="flex items-center gap-6">
+              {project?.imagesGallery?.map((image: any, index: number) => (
+                <div
+                  key={index}
+                  className="mb-4 bg-secondary rounded-lg overflow-hidden aspect-[16/9] flex items-center justify-center"
+                >
+                  <img
+                    src={ContentfulService.getAssetUrl(image)}
+                    alt={image.fields.title}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              ))}
+            </div>
+
+            {/* <RenderContentfulRichText doc={project.result} /> */}
+
+            {/* <RenderContentfulRichText doc={project.imagesGallery} /> */}
           </div>
         </div>
       </div>

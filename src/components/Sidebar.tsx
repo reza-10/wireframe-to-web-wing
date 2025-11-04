@@ -1,9 +1,8 @@
 import { Link, useLocation } from "react-router-dom";
-import { ExternalLink } from "lucide-react";
 
 const Sidebar = () => {
   const location = useLocation();
-  
+
   const navItems = [
     { name: "Work", path: "/" },
     { name: "About Me", path: "/about" },
@@ -44,30 +43,6 @@ const Sidebar = () => {
           ))}
         </ul>
       </nav>
-
-      <div className="p-8 space-y-4">
-        <div className="flex gap-4">
-          <a
-            href="https://dribbble.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-sm text-muted-foreground hover:text-primary transition-colors flex items-center gap-1"
-          >
-            Dribbble <ExternalLink className="w-3 h-3" />
-          </a>
-          <a
-            href="https://linkedin.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-sm text-muted-foreground hover:text-primary transition-colors flex items-center gap-1"
-          >
-            LinkedIn <ExternalLink className="w-3 h-3" />
-          </a>
-        </div>
-        <p className="text-xs text-muted-foreground">
-          © {new Date().getFullYear()}. All Rights Reserved to Reza.
-        </p>
-      </div>
     </aside>
   );
 };
